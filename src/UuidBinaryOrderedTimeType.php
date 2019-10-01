@@ -95,12 +95,6 @@ class UuidBinaryOrderedTimeType extends Type
         }
 
         try {
-            if (is_string($value) || method_exists($value, '__toString')) {
-                $uuid = $this->getUuidFactory()->fromString((string) $value);
-
-                return $this->encode($uuid);
-            }
-
             if (Uuid::isValid((string) $value)) {
                 $uuid = $this->getUuidFactory()->fromString((string) $value);
                 return $this->encode($uuid);
