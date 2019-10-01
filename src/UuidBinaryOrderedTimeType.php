@@ -2,6 +2,7 @@
 
 namespace Ramsey\Uuid\Doctrine;
 
+use Ramsey\Uuid\Uuid;
 use InvalidArgumentException;
 use Ramsey\Uuid\Codec\OrderedTimeCodec;
 use Doctrine\DBAL\Types\ConversionException;
@@ -97,6 +98,14 @@ class UuidBinaryOrderedTimeType extends Type
             if (is_string($value) || method_exists($value, '__toString')) {
                 $uuid = $this->getUuidFactory()->fromString((string) $value);
 
+                return $this->encode($uuid);
+            }
+
+            if (Uuid::isValid((string) $value)) {
+                $uuid = $this->getUuidFactory()->fromString((string) $value);
+                return $this->encode($uuid);
+            } else {
+                $uuid = $this->decode((string) $value);
                 return $this->encode($uuid);
             }
         } catch (InvalidArgumentException $e) {
